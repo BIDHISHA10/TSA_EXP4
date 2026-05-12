@@ -20,8 +20,103 @@ axis limits.
 6. Display the autocorrelation and partial autocorrelation plots for the ARMA(2,2) process using
 plot_acf and plot_pacf.
 ### PROGRAM:
+```
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.arima_process import ArmaProcess
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+import warnings
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
-OUTPUT:
+# Suppress specific warnings that might clutter output
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
+# Load dataset
+data=pd.read_csv('/content/amazon_sales_data 2025.csv')
+# Declare required variables and set figure size, and visualise the data
+N=1000
+plt.rcParams['figure.figsize'] = [12, 6] #plt.rcParams is a dictionary-like object in Mat
+X=data['Quantity']
+
+# Original Data plot
+plt.figure(figsize=[12, 6])
+plt.plot(X)
+plt.title('Original Data')
+plt.show()
+
+# Original Data ACF and PACF
+plt.figure(figsize=[12, 6])
+plt.subplot(2, 1, 1)
+plot_acf(X, lags=int(len(X)/4), ax=plt.gca())
+plt.title('Original Data ACF')
+plt.subplot(2, 1, 2)
+plot_pacf(X, lags=int(len(X)/4), ax=plt.gca())
+plt.title('Original Data PACF')
+plt.tight_layout()
+plt.show()
+
+# Fitting the ARMA(1,1) model and deriving parameters
+arma11_model = ARIMA(X, order=(1, 0, 1)).fit()
+phi1_arma11 = arma11_model.params['ar.L1']
+theta1_arma11 = arma11_model.params['ma.L1']
+
+# Simulate ARMA(1,1) Process
+ar1 = np.array([1, -phi1_arma11])
+ma1 = np.array([1, theta1_arma11])
+ARMA_1 = ArmaProcess(ar1, ma1).generate_sample(nsample=N)
+
+# Simulated ARMA(1,1) Process plot
+plt.figure(figsize=[12, 6])
+plt.plot(ARMA_1)
+plt.title('Simulated ARMA(1,1) Process')
+plt.xlim([0, 500])
+plt.show()
+
+# Plot ACF and PACF for ARMA(1,1)
+plt.figure(figsize=[12, 6])
+plot_acf(ARMA_1, lags=int(len(ARMA_1)/4))
+plt.title('ACF for ARMA(1,1)')
+plt.show()
+
+plt.figure(figsize=[12, 6])
+plot_pacf(ARMA_1, lags=int(len(ARMA_1)/4))
+plt.title('PACF for ARMA(1,1)')
+plt.show()
+
+# Fitting the ARMA(2,2) model and deriving parameters
+arma22_model = ARIMA(X, order=(2, 0, 2)).fit()
+phi1_arma22 = arma22_model.params['ar.L1']
+phi2_arma22 = arma22_model.params['ar.L2']
+theta1_arma22 = arma22_model.params['ma.L1']
+theta2_arma22 = arma22_model.params['ma.L2']
+
+# Simulate ARMA(2,2) Process
+ar2 = np.array([1, -phi1_arma22, -phi2_arma22])
+ma2 = np.array([1, theta1_arma22, theta2_arma22])
+ARMA_2 = ArmaProcess(ar2, ma2).generate_sample(nsample=N*10)
+
+# Simulated ARMA(2,2) Process plot
+plt.figure(figsize=[12, 6])
+plt.plot(ARMA_2)
+plt.title('Simulated ARMA(2,2) Process')
+plt.xlim([0, 500])
+plt.show()
+
+# Plot ACF and PACF for ARMA(2,2)
+plt.figure(figsize=[12, 6])
+plot_acf(ARMA_2, lags=int(len(ARMA_2)/4))
+plt.title('ACF for ARMA(2,2)')
+plt.show()
+
+plt.figure(figsize=[12, 6])
+plot_pacf(ARMA_2, lags=int(len(ARMA_2)/4))
+plt.title('PACF for ARMA(2,2)')
+plt.show()
+```
+## OUTPUT:
 SIMULATED ARMA(1,1) PROCESS:
 
 <img width="1065" height="603" alt="Screenshot 2026-05-12 091128" src="https://github.com/user-attachments/assets/b0c50dd8-e295-45d6-80bc-d29333c0c4f7" />
