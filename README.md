@@ -1,10 +1,5 @@
 # Ex.No:04   FIT ARMA MODEL FOR TIME SERIES
-# Date: 12-05-2026<img width="1073" height="553" alt="Screenshot 2026-05-12 091342" src="https://github.com/user-attachments/assets/559210d0-e87a-4e2d-9c2e-9b090a9139b1" />
-<img width="1076" height="572" alt="Screenshot 2026-05-12 091156" src="https://github.com/user-attachments/assets/1197c768-29d6-4711-a50c-d7e01321a478" />
-
-
-
-
+# Date: 12-05-2026
 ### AIM:
 To implement ARMA model in python.
 ### ALGORITHM:
@@ -51,5 +46,5 @@ Partial Autocorrelation
 Autocorrelation
 <img width="1032" height="550" alt="image" src="https://github.com/user-attachments/assets/6374e76a-73ef-4b3b-bf53-3d7fb23671d0" />
 
-RESULT:
+## RESULT:
 Thus, a python program is created to fir ARMA Model successfully.
